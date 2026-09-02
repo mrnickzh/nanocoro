@@ -1,0 +1,1 @@
+gcc -m32 main.c nanocoro.c ctx_switch.s -o main.exe -g
