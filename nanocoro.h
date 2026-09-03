@@ -2,8 +2,15 @@
 #define NANOCORO_H
 
 struct context {
-    void *sp;
+	void *eax;
+    void *ebx;
+    void *ecx;
+    void *edx;
+    void *esi;
+    void *edi;
+	
     void *bp;
+	void *sp;
     void *pc;
 };
 

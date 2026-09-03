@@ -44,11 +44,10 @@ list_node *nc_list_remove(list_node **node, int index) {
 			}
 			tmp->front->back = tmp->back;
 			tmp->back->front = tmp->front;
-			ret = tmp->front;
 			free(tmp->data->sp);
 			free(tmp->data);
 			free(tmp);
-			return ret;
+			return NULL;
 		}
 	}
 }
@@ -74,6 +73,12 @@ int nc_create(void (*func)(void), size_t stack_size) {
     coro_ctx->sp = (void *)sp;
     coro_ctx->bp = NULL;
     coro_ctx->pc = (void *)func;
+	coro_ctx->eax = NULL;
+    coro_ctx->ebx = NULL;
+    coro_ctx->ecx = NULL;
+    coro_ctx->edx = NULL;
+    coro_ctx->esi = NULL;
+    coro_ctx->edi = NULL;
 	
 	if (coro_ctx_head == NULL) {
 		coro_ctx_head = nc_list_init(coro_ctx);
@@ -92,7 +97,6 @@ void nc_set(void) {
 }
 
 void nc_yield(int status) {
-	list_node *tmp_ctx = coro_ctx_curr;
 	coro_ctx_curr = coro_ctx_curr->front;
 	if (coro_ctx_curr == NULL) {
 		coro_ctx_curr = coro_ctx_head;
